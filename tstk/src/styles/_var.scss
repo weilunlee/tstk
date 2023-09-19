@@ -1,0 +1,55 @@
+$red:#E62129;
+$orange:#F08519;
+$yellow:#faea0c;
+$green:#009B4C;
+$blue_1:#D3ECF9;
+$light_beige:#FFE8EB;
+$blue_2:#b7dde0;
+$blue_3:#7FC7EB;
+$blue_4:#008FD7;
+$pink:#F4A5A1;
+$light_pink:#FFD0D6;
+$purple_brown:#735B69;
+$light_purple_brown:#735b69cf;
+$beige:#FFE7C7;
+$beige_2:#FEE19F;
+$black:rgb(56, 56, 63);
+$pad_default:15px;
+$pad_bottom:30px;
+$font_default:12px;
+$font_16:16px;
+$font_20:20px;
+$font_24:24px;
+$font_32:32px;
+$font_40:40px;
+$font_48:48px;
+$pad_dash:45px;
+$font-60:60px;
+
+
+
+@font-face{
+    font-family: 'Lato-Black';
+    src: url("./../../src/assests/fonts/Lato-Black.ttf");
+}
+@font-face{
+    font-family: 'Lato-Bold';
+    src: url("./../../src/assests/fonts/Lato-Bold.ttf");
+}
+@font-face{
+    font-family: 'Lato-Light';
+    src: url("./../../src/assests/fonts/Lato-Light.ttf");
+}
+@font-face{
+    font-family: 'Lato-Regular';
+    src: url("./../../src/assests/fonts/Lato-Regular.ttf");
+}
+@font-face{
+    font-family: 'Lato-Thin';
+    src: url("./../../src/assests/fonts/Lato-Thin.ttf");
+}
+.font-Bold{ font-family: 'Lato-Bold'; }
+.font-Boldest{ font-family: 'Lato-Black'; }
+.font-Thinest{ font-family: 'Lato-Thin'; }
+.font-Thin{ font-family: 'Lato-Light'; }
+* { font-family: 'Lato-Regular'; }
