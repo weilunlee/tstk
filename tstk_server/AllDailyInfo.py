@@ -1,8 +1,7 @@
 import datetime
 
 from numpy import void
-from Database import DB
-from fetch import APIs
+from backendSetup.Database import DB, APIs
 # import asyncio
 # import tstk_main
 
