@@ -1,13 +1,7 @@
-import './App.css';
 import Layout from './components/Layout';
-import './styles/all.scss'
 
-function App() {
-  return (
-    <div className="App">
-      <Layout />
-    </div>
-  );
+function App():JSX.Element {
+  return <Layout />;
 }
 
 export default App;

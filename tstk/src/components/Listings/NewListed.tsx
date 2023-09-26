@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import APIs from "../../actions/APIs"
 import { newListing_fromFetch } from "../../interfaces/IfAPI"
 import {OnOff_switch} from "../../interfaces/IfProps"
+import GLOBAL_VAR from "../../assests/globalAttr/globalVar"
 
 const NewListed: React.FC<OnOff_switch>=({onBool, toggleOn})=>{
 
@@ -20,12 +21,13 @@ const NewListed: React.FC<OnOff_switch>=({onBool, toggleOn})=>{
         "備註" 
     ]
     useEffect(()=>{
-            let getListApi:Promise<newListing_fromFetch[]> = new APIs("http://127.0.0.1:8000/TSTK/newListing").GET()
-            getListApi.then(res=>{
-                res.splice(100)
-                setListingResult(res)
-                console.log(res)
-            })
+        let getListApi:Promise<newListing_fromFetch[]> = new APIs(GLOBAL_VAR.HOST + "newListing").GET()
+        getListApi.then(res=>{
+            res.splice(100)
+            setListingResult(res)
+            console.log(res)
+        })
+        .catch(err=>{console.log(err)})
     },[])
     function trans_String_to_Date(_str:string):string{
         return _str.slice(0,3)+"-"+_str.slice(3,5)+"-"+_str.slice(-2)
@@ -38,23 +40,23 @@ const NewListed: React.FC<OnOff_switch>=({onBool, toggleOn})=>{
     return(
     <>
         {/* --- listing container --- */}
-        <div className="row-container bx-shdw h-70 w-100 pad-b-10px">
-        <div className="w-25 h-10 fx-d-r font-l font-Bold fx-fsc pad-l-5pt">New Listing Company</div>
-        <div className="w-100 h-10 fx-d-r">
-            {_listingTitle.map((res, index)=><div className={`fx-ccc h-100 ${index!==8?"w-10":"w-20"}`}key={res}>{res}</div>)}
+        <div className="bg-white rounded-lg shadow">
+        <div className="text-2xl font-bold">New Listing Company</div>
+        <div className="flex flex-row">
+            {_listingTitle.map((res, index)=><div className={`${index===0?"pl-5":''} h-100 ${index!==9?"w-28":"w-60"}`}key={res}>{res}</div>)}
         </div>
-        <div className="w-100 h-80 ovy-a pad-l-2px">
-        {listingResult.map(res=><div className="fx-d-r w-100 row" key={res.Company}>
-            <div className="w-10">{res.Code}</div>
-            <div className="w-10">{res.Company}</div>
-            <div className="w-10">{res.UnderwritingPrice}</div>
-            <div className="w-10">{res.Chairman}</div>
-            <div className="w-10">{trans_CapitalAmount(res["AmountofCapital "])}萬</div>
-            <div className="w-10">{res.Underwriter}</div>
-            <div className="w-10">{trans_String_to_Date(res.ApplicationDate)}</div>
-            <div className="w-10">{trans_String_to_Date(res.ApprovedDate)}</div>
-            <div className="w-10">{trans_String_to_Date(res.ApprovedListingDate)}</div>
-            <div className="w-20">{res.Note}</div>
+        <div className="w-100 h-80 scrollbar overflow-auto pad-l-2px">
+        {listingResult.map(res=><div className="flex flex-row w-100 hover:bg-pink-200" key={res.Company}>
+            <div className="pl-5 w-28">{res.Code}</div>
+            <div className="w-28">{res.Company}</div>
+            <div className="w-28">{res.UnderwritingPrice}</div>
+            <div className="w-28">{res.Chairman}</div>
+            <div className="w-28">{trans_CapitalAmount(res["AmountofCapital "])}萬</div>
+            <div className="w-28">{res.Underwriter}</div>
+            <div className="w-28">{trans_String_to_Date(res.ApplicationDate)}</div>
+            <div className="w-28">{trans_String_to_Date(res.ApprovedDate)}</div>
+            <div className="w-28">{trans_String_to_Date(res.ApprovedListingDate)}</div>
+            <div className="w-60">{res.Note}</div>
         </div>)}
         </div>
         </div>

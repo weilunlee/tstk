@@ -1,0 +1,20 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.create-row-plus{
+    background-color: #b7dde0;
+    border-radius: 5px;
+    width: 5rem;
+    margin-left: 3%;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 0 #008FD7;
+    
+}
+.create-row-plus:active{
+    box-shadow: 1px 1px 0 0 #7FC7EB;
+}
+.create-row-plus::after{
+    display: block  ;
+    content: "+";
+}

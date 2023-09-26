@@ -12,22 +12,22 @@ const Listings: React.FC<LayoutProps>=({setNavSelc, lastSelc})=>{
 
     return(
     <div className="MainContainer">
-        <div className="fx-d-c f-sec h-5 fx-ncfs cp font-Thin"
+        <div className="cursor-pointer font-light"
             onClick={()=>{setNavSelc(_previousPage)}}> {"<"} {lastSelc[1]}</div>
-        <div className="font-xl font-Boldest fx-d-c fx-ncfs">Listing Date</div>
+        <div className="text-3xl tracking-wider font-extrabold fx-d-c fx-ncfs">Listing Date</div>
         
         {/* --- listed container --- */}
-        <div className="fx-d-r fx-fsc marg-t-1 font-l marg-b-1" onClick={toggleListed}>
-            <div className="w-10 fx-d-r fx-fsc">New Listed</div>
-            <div className=" create-row-plus"></div>
+        <div className="flex flex-row my-1 text-xl marg-b-1 cursor-pointer" onClick={toggleListed}>
+            <div className="w-100">New Listed</div>
+            <div className="create-row-plus"></div>
         </div>
         {listed_On? <NewListed onBool={listed_On} toggleOn={toggleListed} />:null}
         {/* --- listed container --- */}
 
         {/* --- listed container --- */}
-        <div className="fx-d-r fx-fsc marg-t-1 font-l marg-b-1" onClick={toggleDelisted}>
-            <div className="w-10 fx-d-r fx-fsc">Delisted</div>
-            <div className=" create-row-plus"></div>
+        <div className="flex flex-row my-1 text-xl marg-b-1 cursor-pointer" onClick={toggleDelisted}>
+            <div className="w-100">Delisted</div>
+            <div className="create-row-plus"></div>
         </div>
         {delisted_On? <Delisted onBool={delisted_On} toggleOn={toggleDelisted} />:null}
         {/* --- listed container --- */}

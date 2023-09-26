@@ -1,12 +1,12 @@
-import newsPng from "../../images/iconc-1.png";
-import newsPngSelc from "../../images/iconc-2.png";
-import EPSPng from "../../images/icon_info_emergency_1.png";
-import EPSPngSelc from "../../images/icon_info_emergency_2.png";
-import NLPng from "../../images/icon_info_basic_1.png";
-import NLPngSelc from "../../images/icon_info_basic_2.png";
-import DLPng from "../../images/icon_info_settings_1.png";
-import DLPngSelc from "../../images/icon_info_settings_2.png";
-import './_navBar.scss';
+
+import newsPng from "../../assests/images/icona-1.png"
+import newsPngSelc from "../../assests/images/iconc-2.png";
+import EPSPng from "../../assests/images/icon_info_emergency_1.png";
+import EPSPngSelc from "../../assests/images/icon_info_emergency_2.png";
+import NLPng from "../../assests/images/icon_info_basic_1.png";
+import NLPngSelc from "../../assests/images/icon_info_basic_2.png";
+import DLPng from "../../assests/images/icon_info_settings_1.png";
+import DLPngSelc from "../../assests/images/icon_info_settings_2.png";
 import { Layout_to_Nav_Props } from "../../interfaces/IfProps";
 
 
@@ -26,8 +26,8 @@ const NavBar: React.FC<Layout_to_Nav_Props>=({navSelc, setNavSelc, setLastSelc})
     }
 
     let navBarFormat = navBarItems.map((items, index)=>{
-        return <div className="w-100 h-10 fx-ccc"  key={items}>
-            <div className={`${(navSelc===index)? "bgC-white br-10":""} w-80 h-60 cp fx-ccc`}
+        return <div className="w-auto h-16 flex justify-center items-center"  key={items}>
+            <div className={`${(navSelc===index)? "bg-white br-10":""} p-2 w-12 h-12 rounded-xl cursor-pointer `}
                 onClick={()=>{handlingNavSelection(index)}}>
                 <img src={(navSelc===index)? navBarImgSrc_selc[index]:navBarImgSrc[index]} 
                     alt={items} 
@@ -39,8 +39,8 @@ const NavBar: React.FC<Layout_to_Nav_Props>=({navSelc, setNavSelc, setLastSelc})
 
     
     return(
-        <div className="w-4 h-100 bgC-black pos-f t-0 l-0">
-            <div className="h-10 fx-ccc">
+        <div className="w-16 h-screen bg-black fixed">
+            <div className="h-16 flex flex-col justify-center items-center">
                 <div className="icon-circle" onClick={()=>{handlingNavSelection(100)}}></div>
             </div>
             {navBarFormat}

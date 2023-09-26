@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import Dashboard from "./Dashboard/Dashboard";
+import Dashboard from "./Dashboard/DashFrame";
 import EPSs from "./EPSs/EPS";
 import Listings from "./Listings/Listings";
 import NavBar from "./navBar/NavBar";
@@ -21,7 +21,7 @@ const Layout: React.FC=()=>{
     
 
     return(
-        <div className="fx-d-r layout">
+        <div className="flex flex-row h-screen w-screen scrollbar overflow-x-hidden overflow-y-auto bg-beige">
             <NavBar navSelc={navSelc} setNavSelc={setNavSelc} setLastSelc={setLastSelc}/>
             {selcComponent}
         </div>

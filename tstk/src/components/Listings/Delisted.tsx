@@ -3,6 +3,7 @@ import { useEffect } from "react"
 import APIs from "../../actions/APIs"
 import { deListed_fromFetch } from "../../interfaces/IfAPI"
 import {OnOff_switch} from "../../interfaces/IfProps"
+import GLOBAL_VAR from "../../assests/globalAttr/globalVar"
 
 const Delisted: React.FC<OnOff_switch>=({onBool, toggleOn})=>{
     const [listingResult, setListingResult] = useState<deListed_fromFetch[]>([])
@@ -12,7 +13,7 @@ const Delisted: React.FC<OnOff_switch>=({onBool, toggleOn})=>{
         "下市日期"
     ]
     useEffect(()=>{
-            let getDelistApi:Promise<deListed_fromFetch[]> = new APIs('http://127.0.0.1:8000/TSTK/delisted').GET()
+            let getDelistApi:Promise<deListed_fromFetch[]> = new APIs(GLOBAL_VAR.HOST + "delisted").GET()
             getDelistApi.then(res=>{
                 res.splice(100)
                 setListingResult(res)
@@ -26,16 +27,16 @@ const Delisted: React.FC<OnOff_switch>=({onBool, toggleOn})=>{
     return(
     <>
         {/* --- listing container --- */}
-        <div className="row-container bx-shdw h-70 w-100 pad-b-10px">
-        <div className="w-25 h-10 fx-d-r font-l font-Bold fx-fsc pad-l-5px">Delisted Company</div>
-        <div className="w-100 h-10 fx-d-r">
-            {_listingTitle.map((res, index)=><div className={`fx-ccc h-100 ${index!==8?"w-10":"w-20"}`}key={res}>{res}</div>)}
+        <div className="bg-white rounded-lg shadow">
+        <div className="text-2xl font-bold">Delisted Company</div>
+        <div className="flex flex-row">
+            {_listingTitle.map((res, index)=><div className={`${index===0?"pl-5":""} h-100 ${index!==8?"w-28":"w-0"}`}key={res}>{res}</div>)}
         </div>
-        <div className="w-100 h-80 ovy-a pad-l-2px">
-        {listingResult.map(res=><div className="fx-d-r w-100 row" key={res.Company}>
-            <div className="w-10">{res.Code}</div>
-            <div className="w-10">{res.Company}</div>
-            <div className="w-10">{trans_String_to_Date(res.DelistingDate)}</div>
+        <div className="w-100 h-72 scrollbar overflow-auto pad-l-2px">
+        {listingResult.map(res=><div className="flex flex-row w-100 hover:bg-pink-200" key={res.Company}>
+            <div className="pl-5 w-28">{res.Code}</div>
+            <div className="w-28">{res.Company}</div>
+            <div className="w-28">{trans_String_to_Date(res.DelistingDate)}</div>
         </div>)}
         </div>
         </div>
