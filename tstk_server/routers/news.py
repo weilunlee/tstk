@@ -8,7 +8,7 @@ router = APIRouter(tags=["News"])
 async def newListing():
     _api = APIs("https://openapi.twse.com.tw/v1/company/newlisting")
     _newList_data = _api.fetchAPI()
-    return _newList_data    
+    return _newList_data
 
 
 # https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml
@@ -16,7 +16,7 @@ async def newListing():
 async def delisted():
     _api = APIs("https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml")
     _delist_data = _api.fetchAPI()
-    return _delist_data    
+    return _delist_data
 
 
 # https://openapi.twse.com.tw/v1/opendata/t187ap04_L
