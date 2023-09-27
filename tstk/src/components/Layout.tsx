@@ -4,6 +4,7 @@ import EPSs from "./EPSs/EPS";
 import Listings from "./Listings/Listings";
 import NavBar from "./navBar/NavBar";
 import News from "./News/News";
+import IndiviualStock from "./Dashboard/Indiviual";
 
 const Layout: React.FC=()=>{
     const [navSelc, setNavSelc] = useState<number>(100)
@@ -13,6 +14,7 @@ const Layout: React.FC=()=>{
     useEffect(()=>{
         switch (navSelc){
             case 100: setSelcComponent(<Dashboard />); break;
+            case 99: setSelcComponent(<IndiviualStock />); break;
             case 0: setSelcComponent(<News setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;
             case 1: setSelcComponent(<EPSs setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;
             case 2: setSelcComponent(<Listings setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;

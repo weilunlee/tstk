@@ -1,9 +1,8 @@
 import { useState } from "react";
-import { MAIN_INDEX } from "../../interfaces/IfAPI";
+import { MAIN_INDEX } from "./InterFaceDash";
 import GLOBAL_FUNC from "../../actions/globalFunc";
 import { AllStockIF } from "./DashFrame";
 
-interface StockRowIF{ stock:MAIN_INDEX }
 interface SwitcherIF{ switcher:number, func:Function, tag:number }
 
 const IndexRow=({allStock, asc, desc}:AllStockIF):JSX.Element=>{
@@ -13,6 +12,7 @@ const IndexRow=({allStock, asc, desc}:AllStockIF):JSX.Element=>{
         else setSwitcher(_tag)
     }
     let Title:Array<string> = ["指數","收盤指數","漲跌"]
+
     return(
     <div className="bg-white rounded-xl shadow col-span-1">
         <div className="flex flex-row justify-between items-center">
@@ -30,11 +30,11 @@ const IndexRow=({allStock, asc, desc}:AllStockIF):JSX.Element=>{
         </div>
         <div className="scrollbar overflow-auto" style={{height:"calc(100vh - 7rem)"}}>
             {switcher===0?
-                allStock.map((res, index)=><StockRow stock={res} key={index}/>)
+                allStock.map((res, index)=><StockRow {...res} key={index}/>)
             :switcher===1?
-                desc.map((res, index)=><StockRow stock={res} key={index}/>)
+                desc.map((res, index)=><StockRow {...res} key={index}/>)
             :
-                asc.map((res, index)=><StockRow stock={res} key={index}/>)
+                asc.map((res, index)=><StockRow {...res} key={index}/>)
             }
         </div>
     </div>
@@ -42,7 +42,7 @@ const IndexRow=({allStock, asc, desc}:AllStockIF):JSX.Element=>{
 }
 export default IndexRow
 
-function StockRow({stock}:StockRowIF):JSX.Element{
+function StockRow(stock:MAIN_INDEX):JSX.Element{
     return  <div className={" mb-1 flex flex-row hover:bg-pink-200"} >
     <div className={UDsign(stock.漲跌, stock.漲跌百分比) + " pl-3 w-80 flex items-center"}>
         {UDtransfer(stock.漲跌, stock.漲跌百分比)}
@@ -70,20 +70,20 @@ function Switcher({switcher, func, tag}:SwitcherIF):JSX.Element{
     </div>
 }
 
-function UDsign(_ud:string, _index:string):string{
-    return _ud==='+'? "border-pink-500 border-l-8":"border-green-500 border-l-8 "
+export function UDsign(_ud:string, _index:string):string{
+    return _ud==='+'? "border-pink-500 border-l-8":_ud==='-'?"border-green-500 border-l-8 ":"border-slate-400 border-l-8 "
 }
 
-function UDtransfer(_ud:string, _index:string):JSX.Element{
-    let _color_bd = _ud==='+'? "border-pink-700 border-r border-t":"border-green-700  border-b border-r"
-    let _rotate = _ud==='+'? "-skew-y-[35deg]":"skew-y-[35deg]"
+export function UDtransfer(_ud:string, _index:string):JSX.Element{
+    let _color_bd = _ud==='+'? "border-pink-700 border-r border-t":_ud==='-'?"border-green-700 border-b border-r":"border-slate-500 border-b"
+    let _rotate = _ud==='+'? "-skew-y-[35deg]":_ud==='-'?"skew-y-[35deg]":""
     return <div className={_rotate + " flex justify-center items-center mr-2"}>
         <div className={_color_bd + " w-3 h-1 rounded-xs"}></div>
     </div>
 }
 
-function UDIndex(_ud:string, _index:string):JSX.Element{
-    let _color = _ud==='+'? "bg-pink-300":"bg-green-300"
+export function UDIndex(_ud:string, _index:string):JSX.Element{
+    let _color = _ud==='+'? "bg-pink-300":_ud==='-'?"bg-green-300":"bg-slate-300"
     return <div className="my-1 w-28 flex flex-row justify-around text-sm">
         <div className={_color + " rounded-full flex justify-center px-2 ml-5"}>{_index}%</div>
     </div>

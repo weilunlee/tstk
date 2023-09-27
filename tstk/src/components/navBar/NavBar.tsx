@@ -8,13 +8,15 @@ import NLPngSelc from "../../assests/images/icon_info_basic_2.png";
 import DLPng from "../../assests/images/icon_info_settings_1.png";
 import DLPngSelc from "../../assests/images/icon_info_settings_2.png";
 import { Layout_to_Nav_Props } from "../../interfaces/IfProps";
+import { useState } from "react";
 
 
 const NavBar: React.FC<Layout_to_Nav_Props>=({navSelc, setNavSelc, setLastSelc})=>{
     let navBarItems:string[] = ["news", "EPS", "new listing", "delisting"]
     let navBarImgSrc:string[] = [ newsPng, EPSPng, NLPng, DLPng ]
     let navBarImgSrc_selc:string[] = [ newsPngSelc, EPSPngSelc, NLPngSelc, DLPngSelc ]
-    
+    const [indexR, setIndexR] = useState(false);
+
     function handlingNavSelection(index:number){
         if(navSelc===100){
             setLastSelc([navSelc, "Dashboard"])
@@ -41,7 +43,11 @@ const NavBar: React.FC<Layout_to_Nav_Props>=({navSelc, setNavSelc, setLastSelc})
     return(
         <div className="w-16 h-screen bg-black fixed">
             <div className="h-16 flex flex-col justify-center items-center">
-                <div className="icon-circle" onClick={()=>{handlingNavSelection(100)}}></div>
+                <div className="icon-circle" onClick={()=>{
+                    if(indexR) handlingNavSelection(100)
+                    else handlingNavSelection(99)
+                    setIndexR(!indexR)
+                }}></div>
             </div>
             {navBarFormat}
         </div>

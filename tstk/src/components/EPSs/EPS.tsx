@@ -3,6 +3,7 @@ import APIs from "../../actions/APIs"
 import { LayoutProps } from "../../interfaces/IfProps"
 import { EPS_fromFetch } from "../../interfaces/IfAPI"
 import GLOBAL_VAR from "../../assests/globalAttr/globalVar"
+import { nameHandle } from "../Dashboard/Indiviual"
 
 
 const EPSs: React.FC<LayoutProps>=({setNavSelc, lastSelc})=>{
@@ -54,15 +55,3 @@ const EPSs: React.FC<LayoutProps>=({setNavSelc, lastSelc})=>{
     )
 }
 export default EPSs
-
-function nameHandle(name:string):string{
-    let _spliter = "股份有限公司"
-    let _spliter2 = "(股)公司"
-    let _spliter3 = "控股有限公司"
-    let _spliter4 = "有限公司"
-    if (name.includes(_spliter)) return name.split(_spliter)[0]
-    else if (name.includes(_spliter2)) return name.split(_spliter2)[0]
-    else if (name.includes(_spliter3)) return name.split(_spliter4)[0]
-    else if (name.includes(_spliter4)) return name.split(_spliter4)[0] 
-    else return name
-}

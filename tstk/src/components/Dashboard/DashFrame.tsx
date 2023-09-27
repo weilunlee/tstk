@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { MAIN_INDEX } from "../../interfaces/IfAPI";
+import { MAIN_INDEX } from "./InterFaceDash";
 import ApiSets from "../../actions/apiSets";
 import IndexRow from "./IndexRow";
 import Dashboard from "./Dashboard";
