@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useEffect } from "react"
-import APIs from "../../actions/APIs"
+// import APIs from "../../actions/APIs"
 import { newListing_fromFetch } from "../../interfaces/IfAPI"
 import {OnOff_switch} from "../../interfaces/IfProps"
 import GLOBAL_VAR from "../../assests/globalAttr/globalVar"
@@ -21,13 +21,13 @@ const NewListed: React.FC<OnOff_switch>=({onBool, toggleOn})=>{
         "備註" 
     ]
     useEffect(()=>{
-        let getListApi:Promise<newListing_fromFetch[]> = new APIs(GLOBAL_VAR.HOST + "newListing").GET()
-        getListApi.then(res=>{
-            res.splice(100)
-            setListingResult(res)
-            console.log(res)
-        })
-        .catch(err=>{console.log(err)})
+        // let getListApi:Promise<newListing_fromFetch[]> = new APIs(GLOBAL_VAR.HOST + "newListing").GET()
+        // getListApi.then(res=>{
+        //     res.splice(100)
+        //     setListingResult(res)
+        //     console.log(res)
+        // })
+        // .catch(err=>{console.log(err)})
     },[])
     function trans_String_to_Date(_str:string):string{
         return _str.slice(0,3)+"-"+_str.slice(3,5)+"-"+_str.slice(-2)

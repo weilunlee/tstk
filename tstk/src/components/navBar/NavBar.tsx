@@ -12,7 +12,7 @@ import { useState } from "react";
 
 
 const NavBar: React.FC<Layout_to_Nav_Props>=({navSelc, setNavSelc, setLastSelc})=>{
-    let navBarItems:string[] = ["news", "EPS", "new listing", "delisting"]
+    let navBarItems:string[] = ["news", "EPS", "listing", "report"]
     let navBarImgSrc:string[] = [ newsPng, EPSPng, NLPng, DLPng ]
     let navBarImgSrc_selc:string[] = [ newsPngSelc, EPSPngSelc, NLPngSelc, DLPngSelc ]
     const [indexR, setIndexR] = useState(false);

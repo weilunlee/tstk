@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MAIN_INDEX, MI20_If, Stock_all_day } from "./InterFaceDash";
-import ApiSets from "../../actions/apiSets";
+import ApiSets from "../../actions/APIs/apiSets";
 import { UDIndex, UDsign, UDtransfer } from "./IndexRow";
 import GLOBAL_FUNC from "../../actions/globalFunc";
 
@@ -39,31 +39,18 @@ const IndiviualStock: React.FC=()=>{
 
     return(
     <div className="MainContainer">
-        {/* <div className="text-3xl tracking-wider font-extrabold">Hello User !</div> */}
-        {/* {allStock} */}
         <div className="bg-white rounded-lg shadow">
-            <div>{allStock.length}</div>
-            <div className="text-2xl font-bold">STOCK</div>
+            <div className="flex flex-row">
+                <div className="text-2xl font-extrabold pl-4 tracking-wider">S T O C K </div>
+                <div>{allStock.length}</div>
+            </div>
             <div className="flex flex-row">
                 {Title.map((res, index)=><div className={`${index===0?"pl-5":''} h-100 ${index===1?"w-44":"w-28"}`}key={index}>{res}</div>)}
             </div>
-            <div className="h-60 scrollbar overflow-auto pad-l-2px">
+            <div className="h-72 scrollbar overflow-auto pad-l-2px">
                 {allStock.map((res, index)=><StockRow {...res} key={index}/>)}
-                {/* {allStock.map((res, index)=><div className="flex flex-row w-100 hover:bg-pink-200" key={index}>
-                    <div className="pl-5 w-28">{res.Code}</div>
-                    <div className="w-44">{res.Name}</div>
-                    <div className="w-28">{res.OpeningPrice}</div>
-                    <div className="w-28">{res.HighestPrice}</div>
-                    <div className="w-28">{res.LowestPrice}</div>
-                    <div className="w-28">{res.ClosingPrice}</div>
-                    <div className="w-28">{res.Change}</div>
-                    <div className="w-28">{res.TradeVolume}</div>
-                    <div className="w-28">{res.TradeValue}</div>
-                    <div className="w-28">{res.Transaction}</div>
-                </div>)} */}
             </div>
         </div>
-        <div>{ETF.length}</div>
         <div className="bg-white rounded-lg shadow">
             <div className="text-2xl font-bold">ETF</div>
             <div className="flex flex-row">
@@ -94,11 +81,12 @@ function StockRow(stock:Stock_all_day):JSX.Element{
     let sign = Qutoe>0?"+":Qutoe===0?"":"-"
     let percentage = (Qutoe*100/parseFloat(stock.ClosingPrice)).toFixed(2)
     return  <div className={" mb-1 flex flex-row hover:bg-pink-200"} >
-    <div className={UDsign(sign, percentage.toString()) + " pl-3 w-60 flex items-center"}>
-        {UDtransfer(sign, percentage.toString())}
-        {GLOBAL_FUNC.abbreviate(nameHandle(stock.Name), 5)}
-        {UDIndex(sign, percentage.toString())}
+    <div className={UDsign(sign, percentage.toString()) + " pl-3 flex items-center"}>{UDtransfer(sign, percentage.toString())}</div>
+    <div className="w-32 flex flex-row">
+        <div className="text-xs mr-4">{stock.Code}</div>
+        <div className="flex items-center">{GLOBAL_FUNC.abbreviate(nameHandle(stock.Name), 5)}</div>
     </div>
+    <div>{UDIndex(sign, percentage.toString())}</div>
     <div className="w-32 flex justify-center items-center">{stock.OpeningPrice}</div>
     <div className="w-32 flex justify-center items-center">{stock.ClosingPrice}</div>
     <div className="w-32 flex justify-center items-center">{stock.TradeVolume}</div>      

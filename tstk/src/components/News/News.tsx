@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useEffect } from "react"
-import APIs from "../../actions/APIs"
+// import APIs from "../../actions/APIs"
 import { LayoutProps } from "../../interfaces/IfProps"
 import { news_fromFetch } from "../../interfaces/IfAPI"
 import GLOBAL_VAR from "../../assests/globalAttr/globalVar"
@@ -22,14 +22,14 @@ const News: React.FC<LayoutProps>=({setNavSelc, lastSelc})=>{
     ]
 
     useEffect(()=>{
-        let getNewsApi = new APIs(GLOBAL_VAR.HOST + "news").GET()
-        getNewsApi.then(res=>{ 
-            let _a:news_fromFetch[]
-            if(newsSelc==="") _a = res
-            else _a = res.filter((_r:news_fromFetch)=>_r.符合條款===newsSelc)
-            setNewsList(_a) 
-        })
-        .catch(err=>{console.log(err)})
+        // let getNewsApi = new APIs(GLOBAL_VAR.HOST + "news").GET()
+        // getNewsApi.then(res=>{ 
+        //     let _a:news_fromFetch[]
+        //     if(newsSelc==="") _a = res
+        //     else _a = res.filter((_r:news_fromFetch)=>_r.符合條款===newsSelc)
+        //     setNewsList(_a) 
+        // })
+        // .catch(err=>{console.log(err)})
     },[newsSelc])
     function trans_String_to_Date(_str:string):string{
         return _str.slice(0,3)+"-"+_str.slice(3,5)+"-"+_str.slice(-2)

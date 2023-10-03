@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { MAIN_INDEX } from "./InterFaceDash";
-import ApiSets from "../../actions/apiSets";
+import ApiSets from "../../actions/APIs/apiSets";
 import IndexRow from "./IndexRow";
 import Dashboard from "./Dashboard";
 export interface AllStockIF{ allStock:MAIN_INDEX[], desc:MAIN_INDEX[], asc:MAIN_INDEX[] }

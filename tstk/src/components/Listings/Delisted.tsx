@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useEffect } from "react"
-import APIs from "../../actions/APIs"
+// import APIs from "../../actions/APIs"
 import { deListed_fromFetch } from "../../interfaces/IfAPI"
 import {OnOff_switch} from "../../interfaces/IfProps"
 import GLOBAL_VAR from "../../assests/globalAttr/globalVar"
@@ -13,12 +13,12 @@ const Delisted: React.FC<OnOff_switch>=({onBool, toggleOn})=>{
         "下市日期"
     ]
     useEffect(()=>{
-            let getDelistApi:Promise<deListed_fromFetch[]> = new APIs(GLOBAL_VAR.HOST + "delisted").GET()
-            getDelistApi.then(res=>{
-                res.splice(100)
-                setListingResult(res)
-                console.log(res)
-            })
+            // let getDelistApi:Promise<deListed_fromFetch[]> = new APIs(GLOBAL_VAR.HOST + "delisted").GET()
+            // getDelistApi.then(res=>{
+            //     res.splice(100)
+            //     setListingResult(res)
+            //     console.log(res)
+            // })
     },[])
     function trans_String_to_Date(_str:string):string{
         return _str.slice(0,3)+"-"+_str.slice(3,5)+"-"+_str.slice(-2)

@@ -45,7 +45,7 @@ function UDIndex(_ud:string, _index:string):JSX.Element{
 interface T5BoxIF{ row:MAIN_INDEX[], color:string}
 
 function Top5Box({row, color}:T5BoxIF):JSX.Element{
-    return <div className={`mt-5 border-l-[30px] border-4 border-${color}-300 bg-white shadow rounded-xl w-[25rem] h-40 flex flex-col justify-around items-start`}>
+    return <div className={`mt-5 border-${color}-500 border-l-[30px] border-4 bg-white shadow rounded-xl w-[25rem] h-40 flex flex-col justify-around items-start`}>
         {row.map(res=><div className="w-full flex flex-row justify-between items-center hover:bg-slate-200" key={res.指數}>
             <div>{UDIndex(res.漲跌, res.漲跌百分比)}</div>
             <div className="w-40">{GLOBAL_FUNC.abbreviate(nameHandle(res.指數), 8)}</div>

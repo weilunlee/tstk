@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import APIs from "../../actions/APIs"
+// import APIs from "../../actions/APIs"
 import { LayoutProps } from "../../interfaces/IfProps"
 import { EPS_fromFetch } from "../../interfaces/IfAPI"
 import GLOBAL_VAR from "../../assests/globalAttr/globalVar"
@@ -20,9 +20,9 @@ const EPSs: React.FC<LayoutProps>=({setNavSelc, lastSelc})=>{
     ]
 
     useEffect(()=>{
-        let getEPS = new APIs(GLOBAL_VAR.HOST + "EPS").GET()
-        getEPS.then(res=>{setEPS_row(res)})
-        .catch(err=>{console.log(err)})
+        // let getEPS = new APIs(GLOBAL_VAR.HOST + "EPS").GET()
+        // getEPS.then(res=>{setEPS_row(res)})
+        // .catch(err=>{console.log(err)})
     }, [])
 
     function trans_String_to_Date(_str:string):string{
