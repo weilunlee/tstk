@@ -1,7 +1,7 @@
 from fastapi import FastAPI, status
 from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
-from routers import news, stockInfo
+from routers import news, stockInfo, governance
 import uvicorn
 import env
 
@@ -19,6 +19,7 @@ app.add_middleware(
 # 開 cors !!!!
 app.include_router(news.router)
 app.include_router(stockInfo.router)
+app.include_router(governance.router)
 
 if __name__ == '__main__':
     config = uvicorn.Config(

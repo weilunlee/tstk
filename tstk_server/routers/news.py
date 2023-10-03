@@ -4,7 +4,7 @@ from fastapi import APIRouter
 router = APIRouter(tags=["News"])
 
 # https://openapi.twse.com.tw/v1/company/newlisting
-@router.get("/TSTK/newListing", status_code=200, summary='new listing company information')
+@router.get("/news/newListing", status_code=200, summary='new listing company information')
 async def newListing():
     _api = APIs("https://openapi.twse.com.tw/v1/company/newlisting")
     _newList_data = _api.fetchAPI()
@@ -12,7 +12,7 @@ async def newListing():
 
 
 # https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml
-@router.get("/TSTK/delisted", status_code=200, summary='delisted company information')
+@router.get("/news/delisted", status_code=200, summary='delisted company information')
 async def delisted():
     _api = APIs("https://openapi.twse.com.tw/v1/company/suspendListingCsvAndHtml")
     _delist_data = _api.fetchAPI()
@@ -20,7 +20,7 @@ async def delisted():
 
 
 # https://openapi.twse.com.tw/v1/opendata/t187ap04_L
-@router.get("/TSTK/news", status_code=200, summary='news')
+@router.get("/news/news", status_code=200, summary='news')
 async def news():
     _api = APIs("https://openapi.twse.com.tw/v1/opendata/t187ap04_L")
     _news = _api.fetchAPI()
