@@ -1,4 +1,3 @@
-import GLOBAL_VAR from "../../assests/globalAttr/globalVar";
 import api, { paramsIF } from "./api";
 
 export default class ApiSets{
