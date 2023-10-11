@@ -3,26 +3,17 @@ import { MAIN_INDEX, MI20_If, Stock_all_day } from "./InterFaceDash";
 import ApiSets from "../../actions/APIs/apiSets";
 import { UDIndex, UDsign, UDtransfer } from "./IndexRow";
 import GLOBAL_FUNC from "../../actions/globalFunc";
+import { useAppSelector } from "../../stores/hooks";
 
 const IndiviualStock: React.FC=()=>{
-    const [allStock, setAllStock] = useState<Stock_all_day[]>([]);
-    const [ETF, setETF] = useState<Stock_all_day[]>([]);
-    const [MI20, setMI20] = useState<MI20_If[]>([]);
-
-    useEffect(()=>{
-        ApiSets.get_StockAllDay<Stock_all_day[]>()
-        .then(res=>{
-            let _etf = res.filter(_s=>_s.Code[0]==="0")
-            let _stock = res.filter(_s=>_s.Code[0]!=="0")
-            setETF(_etf)
-            setAllStock(_stock)
-        })
-        .catch(err=>{console.log(err)})
-
-        ApiSets.get_MI20<MI20_If[]>()
-        .then(res=>{console.log(res); setMI20(res)})
-        .catch(err=>{console.log(err)})
-    }, [])
+    const store_stocks:Stock_all_day[] = useAppSelector(state=>state.stocks.stocks)
+    const store_ETFs:Stock_all_day[] = useAppSelector(state=>state.stocks.etfs)
+    // const [MI20, setMI20] = useState<MI20_If[]>([]);
+    // useEffect(()=>{
+    //     ApiSets.get_MI20<MI20_If[]>()
+    //     .then(res=>{console.log(res); setMI20(res)})
+    //     .catch(err=>{console.log(err)})
+    // }, [])
 
     let Title:Array<string> = [
         "公司代號",
@@ -42,13 +33,13 @@ const IndiviualStock: React.FC=()=>{
         <div className="bg-white rounded-lg shadow">
             <div className="flex flex-row">
                 <div className="text-2xl font-extrabold pl-4 tracking-wider">S T O C K </div>
-                <div>{allStock.length}</div>
+                <div>{store_stocks.length}</div>
             </div>
             <div className="flex flex-row">
                 {Title.map((res, index)=><div className={`${index===0?"pl-5":''} h-100 ${index===1?"w-44":"w-28"}`}key={index}>{res}</div>)}
             </div>
             <div className="h-72 scrollbar overflow-auto pad-l-2px">
-                {allStock.map((res, index)=><StockRow {...res} key={index}/>)}
+                {store_stocks.map((res, index)=><StockRow {...res} key={index}/>)}
             </div>
         </div>
         <div className="bg-white rounded-lg shadow">
@@ -57,7 +48,7 @@ const IndiviualStock: React.FC=()=>{
                 {Title.map((res, index)=><div className={`${index===0?"pl-5":''} h-100 ${index===1?"w-44":"w-28"}`}key={index}>{res}</div>)}
             </div>
             <div className="h-40 scrollbar overflow-auto pad-l-2px">
-                {ETF.map((res, index)=><div className="flex flex-row w-100 hover:bg-pink-200" key={index}>
+                {store_ETFs.map((res, index)=><div className="flex flex-row w-100 hover:bg-pink-200" key={index}>
                     <div className="pl-5 w-28">{res.Code}</div>
                     <div className="w-44">{res.Name}</div>
                     <div className="w-28">{res.OpeningPrice}</div>
