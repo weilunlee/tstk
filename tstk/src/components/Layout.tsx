@@ -27,7 +27,7 @@ const Layout: React.FC=()=>{
     
 
     return(
-        <div className="flex flex-row h-screen w-screen overflow-hidden bg-beige">
+        <div className="flex flex-row h-screen w-screen overflow-hidden bg-slate-50">
             <NavBar navSelc={navSelc} setNavSelc={setNavSelc} setLastSelc={setLastSelc}/>
             {selcComponent}
         </div>

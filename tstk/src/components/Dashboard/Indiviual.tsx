@@ -1,86 +1,68 @@
-import { useEffect, useState } from "react";
-import { MAIN_INDEX, MI20_If, Stock_all_day } from "./InterFaceDash";
-import ApiSets from "../../actions/APIs/apiSets";
+import { MAIN_INDEX, Stock_all_day } from "./InterFaceDash";
 import { UDIndex, UDsign, UDtransfer } from "./IndexRow";
-import GLOBAL_FUNC from "../../actions/globalFunc";
+import GLOBAL_FUNC, { SelcBox } from "../../actions/globalFunc";
 import { useAppSelector } from "../../stores/hooks";
+import { useEffect, useState } from "react";
 
 const IndiviualStock: React.FC=()=>{
     const store_stocks:Stock_all_day[] = useAppSelector(state=>state.stocks.stocks)
     const store_ETFs:Stock_all_day[] = useAppSelector(state=>state.stocks.etfs)
-    // const [MI20, setMI20] = useState<MI20_If[]>([]);
-    // useEffect(()=>{
-    //     ApiSets.get_MI20<MI20_If[]>()
-    //     .then(res=>{console.log(res); setMI20(res)})
-    //     .catch(err=>{console.log(err)})
-    // }, [])
-
-    let Title:Array<string> = [
-        "公司代號",
-        "公司名稱",
-        "開盤價",
-        "最高點",
-        "最低點",
-        "收盤價",
-        "漲跌幅",
-        "張數",
-        "總量",
-        "交易次數",
-    ]
-
     return(
-    <div className="MainContainer">
-        <div className="bg-white rounded-lg shadow">
-            <div className="flex flex-row">
-                <div className="text-2xl font-extrabold pl-4 tracking-wider">S T O C K </div>
-                <div>{store_stocks.length}</div>
-            </div>
-            <div className="flex flex-row">
-                {Title.map((res, index)=><div className={`${index===0?"pl-5":''} h-100 ${index===1?"w-44":"w-28"}`}key={index}>{res}</div>)}
-            </div>
-            <div className="h-72 scrollbar overflow-auto pad-l-2px">
-                {store_stocks.map((res, index)=><StockRow {...res} key={index}/>)}
-            </div>
-        </div>
-        <div className="bg-white rounded-lg shadow">
-            <div className="text-2xl font-bold">ETF</div>
-            <div className="flex flex-row">
-                {Title.map((res, index)=><div className={`${index===0?"pl-5":''} h-100 ${index===1?"w-44":"w-28"}`}key={index}>{res}</div>)}
-            </div>
-            <div className="h-40 scrollbar overflow-auto pad-l-2px">
-                {store_ETFs.map((res, index)=><div className="flex flex-row w-100 hover:bg-pink-200" key={index}>
-                    <div className="pl-5 w-28">{res.Code}</div>
-                    <div className="w-44">{res.Name}</div>
-                    <div className="w-28">{res.OpeningPrice}</div>
-                    <div className="w-28">{res.HighestPrice}</div>
-                    <div className="w-28">{res.LowestPrice}</div>
-                    <div className="w-28">{res.ClosingPrice}</div>
-                    <div className="w-28">{res.Change}</div>
-                    <div className="w-28">{res.TradeVolume}</div>
-                    <div className="w-28">{res.TradeValue}</div>
-                    <div className="w-28">{res.Transaction}</div>
-                </div>)}
-                </div>
-        </div>
+    <div className="MainContainer grid grid-cols-2 gap-2">
+        <StockFrame stocks={store_stocks} name="S T O C K"/>
+        <StockFrame stocks={store_ETFs} name="E T F "/>
     </div>
     )
 }
 export default IndiviualStock
 
+interface StockFrameIF{
+    stocks:Stock_all_day[],
+    name:string
+}
+
+const StockFrame=({stocks, name}:StockFrameIF):JSX.Element=>{
+    const [restoreType, setRestoreType] = useState<string>("Code");
+    const [stockRow, setStockRow] = useState<Stock_all_day[]>();
+    
+    useEffect(()=>{
+        if(!stocks) return
+        let _partial = stocks.slice().sort((a, b) => parseFloat(b[restoreType as keyof Stock_all_day]) - parseFloat(a[restoreType as keyof Stock_all_day])).slice(0, 50)
+        setStockRow(_partial)
+    }, [restoreType, stocks])
+
+    return(
+    <div className="bg-white rounded-lg shadow col-span-1">
+        <div className="flex flex-row items-center justify-between pr-5 h-12">
+            <div className="flex flex-row">
+                <div className="text-2xl font-extrabold pl-4 tracking-wider mr-2">{name}</div>
+                <div>{stocks.length}</div>
+            </div>
+            <div className="flex flex-row">
+                {["Code","Change","TradeVolume","Transaction"].map(res=><SelcBox key={res} content={res} func={setRestoreType} selected={restoreType}/>)}
+            </div>                    
+        </div>
+        <div className="h-[85vh] scrollbar overflow-auto pad-l-2px">
+            {stockRow && stockRow.map((res, index)=><StockRow {...res} key={index}/>)}
+        </div>
+    </div>
+    )
+}
+
 function StockRow(stock:Stock_all_day):JSX.Element{
     let Qutoe = parseFloat(stock.ClosingPrice) - parseFloat(stock.OpeningPrice)
     let sign = Qutoe>0?"+":Qutoe===0?"":"-"
     let percentage = (Qutoe*100/parseFloat(stock.ClosingPrice)).toFixed(2)
-    return  <div className={" mb-1 flex flex-row hover:bg-pink-200"} >
-    <div className={UDsign(sign, percentage.toString()) + " pl-3 flex items-center"}>{UDtransfer(sign, percentage.toString())}</div>
-    <div className="w-32 flex flex-row">
-        <div className="text-xs mr-4">{stock.Code}</div>
-        <div className="flex items-center">{GLOBAL_FUNC.abbreviate(nameHandle(stock.Name), 5)}</div>
+    return  <div className={"grid grid-cols-16 mb-1 hover:bg-pink-200"} >
+    <div className={UDsign(sign, percentage.toString()) + " pl-3 flex items-center col-span-1"}>{UDtransfer(sign, percentage.toString())}</div>
+    <div className="flex flex-row col-span-4">
+        <div className="w-8 text-xs mr-4">{stock.Code}</div>
+        <div className="flex items-center">{GLOBAL_FUNC.abbreviate(nameHandle(stock.Name), 6)}</div>
     </div>
-    <div>{UDIndex(sign, percentage.toString())}</div>
-    <div className="w-32 flex justify-center items-center">{stock.OpeningPrice}</div>
-    <div className="w-32 flex justify-center items-center">{stock.ClosingPrice}</div>
-    <div className="w-32 flex justify-center items-center">{stock.TradeVolume}</div>      
+    <div className="col-span-2">{UDIndex(sign, percentage.toString())}</div>
+    <div className="flex justify-end items-center col-span-3 pr-2">{stock.ClosingPrice}</div>
+    <div className="flex justify-end items-center col-span-3">{stock.TradeVolume} 張</div>
+    <div className="flex justify-end items-center col-span-3 pr-5">{stock.Transaction} 次</div>
 </div>
 }
 

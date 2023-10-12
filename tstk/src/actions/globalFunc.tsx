@@ -41,4 +41,18 @@ const ShowOrign=({children, content, type}:showProps):JSX.Element=>{
         {children}
     </div>
 }
+
+interface SelcBoxIF{
+    content:string,
+    func:(val:string)=>void
+    selected:string
+}
+export const SelcBox=({content, func, selected}:SelcBoxIF):JSX.Element=>{
+    let _slc = selected===content
+    return <div className={`flex flex-row items-center ml-2 px-2 cursor-pointer hover:bg-slate-100 rounded-lg ${_slc? "bg-slate-100":""}`} onClick={()=>{func(content)}}>
+        <div className={`${_slc?"bg-black":""} w-2 h-2 border border-black mr-1`}></div>
+        <div>{content}</div>
+    </div>
+}
+
 export default GLOBAL_FUNC;

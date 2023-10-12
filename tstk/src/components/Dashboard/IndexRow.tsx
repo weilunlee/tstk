@@ -17,7 +17,7 @@ const IndexRow=({allStock, asc, desc}:AllStockIF):JSX.Element=>{
     <div className="bg-white rounded-xl shadow col-span-1">
         <div className="flex flex-row justify-between items-center">
             <div className="flex flex-row">
-                <div className="text-2xl font-extrabold pl-4 tracking-wider">E T F</div>
+                <div className="text-2xl font-extrabold pl-4 tracking-wider">TWSE 大 盤 指 數</div>
                 <div>{allStock.length}</div>
             </div>
             <div className="flex flex-row">

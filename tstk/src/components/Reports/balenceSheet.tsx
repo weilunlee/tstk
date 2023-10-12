@@ -2,10 +2,10 @@ import { useEffect, useState } from "react"
 import ApiSets from "../../actions/APIs/apiSets"
 import { LayoutProps } from "../../interfaces/IfProps"
 import { blcSheetIF } from "../../actions/APIs/apiInterface"
-import GLOBAL_FUNC from "../../actions/globalFunc"
+import GLOBAL_FUNC, { SelcBox } from "../../actions/globalFunc"
 import { Stock_all_day } from "../Dashboard/InterFaceDash"
 import { useAppDispatch, useAppSelector } from "../../stores/hooks"
-import { SET_BLC_ABNORMAL, SET_BLC_FINANCIAL, SET_BLC_INSURANCE, SET_BLC_NORMAL, SET_BLC_SECURITIES } from "../../stores/reportsSlice"
+import { SET_BLC_FINANCIAL, SET_BLC_NORMAL, SET_BLC_SECURITIES } from "../../stores/reportsSlice"
 
 interface blcsheet_with_stockInfo extends blcSheetIF{
     ClosingPrice:string,
@@ -27,26 +27,23 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
     const store_blcSecur:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.sercurities)
     const dispatch = useAppDispatch()
     useEffect(()=>{
+        if(store_blcNormal.length!==0) return
         ApiSets.get_balenceSheet<blcSheetIF[]>()
         .then(res=>{dispatch(SET_BLC_NORMAL(res))})
         .catch(err=>{console.log(err)})
-
+    }, [dispatch, store_blcNormal])
+    useEffect(()=>{
+        if(store_blcFinancial.length!==0) return
         ApiSets.get_balenceSheet_financial<blcSheetIF[]>()
         .then(res=>{dispatch(SET_BLC_FINANCIAL(res))})
         .catch(err=>{console.log(err)})
-
-        ApiSets.get_balenceSheet_abnormal<blcSheetIF[]>()
-        .then(res=>{dispatch(SET_BLC_ABNORMAL(res))})
-        .catch(err=>{console.log(err)})
-
-        ApiSets.get_balenceSheet_ins<blcSheetIF[]>()
-        .then(res=>{dispatch(SET_BLC_INSURANCE(res))})
-        .catch(err=>{console.log(err)})
-
+    }, [dispatch, store_blcFinancial])
+    useEffect(()=>{
+        if(store_blcSecur.length!==0) return
         ApiSets.get_balenceSheet_securities<blcSheetIF[]>()
         .then(res=>{dispatch(SET_BLC_SECURITIES(res))})
         .catch(err=>{console.log(err)})
-    }, [dispatch])
+    }, [dispatch, store_blcSecur])
     
     useEffect(()=>{
         let highest = [...store_blcSecur, ...store_blcNormal, ...store_blcFinancial].flatMap(res=>{
@@ -62,20 +59,22 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
             }}
             return _arr
         })
-        let _partial = highest.sort((a, b) => parseFloat(b[restoreType as keyof blcsheet_with_stockInfo]) - parseFloat(a[restoreType as keyof blcsheet_with_stockInfo])).slice(0, 20)
+        let _partial = highest.sort((a, b) => parseFloat(b[restoreType as keyof blcsheet_with_stockInfo]) - parseFloat(a[restoreType as keyof blcsheet_with_stockInfo])).slice(0, 50)
         if (!_partial) return
-
         setBlcSheetRow(_partial)
     }, [store_blcSecur, store_blcNormal, store_blcFinancial, restoreType, store_stocks])
+    
     return <div className="MainContainer">
         <div className="bg-white rounded-xl shadow col-span-1">
             <div className="flex flex-row justify-between items-center">
-                <div className="flex flex-row items-center h-12">
+                <div className="flex flex-row items-center justify-between pr-5 w-full h-12">
                     <div className="flex flex-row">
                         <div className="text-2xl font-extrabold pl-4 tracking-wider mr-2">資 產 負 債 表 </div>
                         <div>{blcSheetRow&& blcSheetRow[0] && GLOBAL_FUNC.month(blcSheetRow[0].季別)}出表</div>
                     </div>
-                    {["資產總額", "負債總額", "權益總額", "保留盈餘", "流動資產", "BookValueOverShareValue", "PERatio"].map(res=><SelcBox key={res} content={res} func={setRestoreType} selected={restoreType}/>)}
+                    <div className="flex flex-row">
+                        {["資產總額", "負債總額", "權益總額", "保留盈餘", "流動資產", "BookValueOverShareValue", "PERatio"].map(res=><SelcBox key={res} content={res} func={setRestoreType} selected={restoreType}/>)}
+                    </div>                    
                 </div>
             </div>
             <div className="grid grid-cols-12 text-l font-bold text-white mr-[10px]">
@@ -84,7 +83,7 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
                 <div className="col-span-3 flex justify-center bg-emerald-600">L I A B I L I T Y</div>
                 <div className="col-span-4 flex justify-center bg-slate-700">E Q U I T Y</div>
             </div>
-            <div className="scrollbar overflow-auto" style={{height:" calc(100vh - 5rem)"}}>
+            <div className="scrollbar overflow-auto" style={{height:" calc(100vh - 6rem)"}}>
                 {blcSheetRow?.map(res=>{
                     return <CompanyRow {...res} key={res.公司代號} />
                 })}
@@ -105,9 +104,12 @@ const CompanyRow=(props:blcsheet_with_stockInfo):JSX.Element=>{
                 <div className="flex w-24">{GLOBAL_FUNC.abbreviate(props.公司名稱, 5)}</div>
                 <div className="w-20">{props.BookValueOverShareValue}</div>
             </div>
-            {openBox?<div>
-                <div>{props.每股參考淨值}</div>
-                <div>{props.ClosingPrice}</div>
+            {openBox?<div className="w-full flex flex-col items-end">
+                <div className="w-20">
+                    <div>{props.每股參考淨值}</div>
+                    <div className="border-t border-black w-12"></div>
+                    <div>{props.ClosingPrice}</div>
+                </div>
             </div>:""}
         </div>
         <div className="col-span-3 flex flex-col justify-start items-center border-r border-slate-200">
@@ -160,19 +162,6 @@ const CompanyRow=(props:blcsheet_with_stockInfo):JSX.Element=>{
             </div>
             </>:null}
         </div>
-    </div>
-}
-
-interface SelcBoxIF{
-    content:string,
-    func:(val:string)=>void
-    selected:string
-}
-const SelcBox=({content, func, selected}:SelcBoxIF):JSX.Element=>{
-    let _slc = selected===content
-    return <div className={`flex flex-row items-center ml-2 px-2 cursor-pointer hover:bg-slate-100 rounded-lg ${_slc? "bg-slate-100":""}`} onClick={()=>{func(content)}}>
-        <div className={`${_slc?"bg-black":""} w-2 h-2 border border-black mr-1`}></div>
-        <div>{content}</div>
     </div>
 }
 
