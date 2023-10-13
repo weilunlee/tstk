@@ -26,6 +26,10 @@ class GLOBAL_FUNC{
         else if(_len<=12) return <ShowOrign content={str} type={type}>{_flag}{_onlyNumber.substring(0, _onlyNumber.length - 8)}億</ShowOrign>
         else return <ShowOrign content={str} type={type}>{_flag}{str.substring(0, str.length - 12)}.{_onlyNumber.substring(0, _onlyNumber.length - 11)}兆</ShowOrign>
     }
+    static fractial(Numerator:string, denominator:string, fixed:number):string{
+        let _re = (parseInt(Numerator)*100/parseInt(denominator)).toFixed(fixed)
+        return _re.toString()+"%"
+    }
 }
 interface showProps{
     children:ReactNode,

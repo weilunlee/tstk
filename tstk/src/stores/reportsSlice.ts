@@ -1,13 +1,14 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "./store";
-import { MAIN_INDEX, Stock_all_day } from "../components/Dashboard/InterFaceDash";
-import { blcSheetIF } from "../actions/APIs/apiInterface";
+import { MAIN_INDEX } from "../components/Dashboard/InterFaceDash";
+import { blcSheetIF, incStatementIF } from "../actions/APIs/apiInterface";
 
 interface AllReportsIF{
     balanceSheet:BlcSheet_object_IF,
-    incomeSheet:Stock_all_day[],
+    incomeSheet:IncStatement_object_IF,
     cashFlowSheet:MAIN_INDEX[]
 }
+
 interface BlcSheet_object_IF{
     normal:blcSheetIF[]
     abnormal:blcSheetIF[]
@@ -15,7 +16,13 @@ interface BlcSheet_object_IF{
     sercurities:blcSheetIF[]
     insurance:blcSheetIF[]
 }
-
+interface IncStatement_object_IF{
+    normal:incStatementIF[]
+    abnormal:incStatementIF[]
+    financial:incStatementIF[]
+    sercurities:incStatementIF[]
+    insurance:incStatementIF[]
+}
 const initialState:AllReportsIF = {
     balanceSheet:{
         normal:[],
@@ -24,7 +31,13 @@ const initialState:AllReportsIF = {
         sercurities:[],
         insurance:[]
     },
-    incomeSheet:[],
+    incomeSheet:{
+        normal:[],
+        abnormal:[],
+        financial:[],
+        sercurities:[],
+        insurance:[]
+    },
     cashFlowSheet:[]
 }
 
@@ -47,8 +60,14 @@ export const reportsSlice = createSlice({
         SET_BLC_INSURANCE: (state, action:PayloadAction<blcSheetIF[]>) => {
             state.balanceSheet.insurance = action.payload
         },
-        SET_INCOME_SHEET: (state, action:PayloadAction<Stock_all_day[]>) => {
-            state.incomeSheet = action.payload
+        SET_INC_NORMAL: (state, action:PayloadAction<incStatementIF[]>) => {
+            state.incomeSheet.normal = action.payload
+        },
+        SET_INC_FINANCIAL: (state, action:PayloadAction<incStatementIF[]>) => {
+            state.incomeSheet.financial = action.payload
+        },
+        SET_INC_SECURITIES: (state, action:PayloadAction<incStatementIF[]>) => {
+            state.incomeSheet.sercurities = action.payload
         },
         SET_CASHFLOW_SHEET:(state, action:PayloadAction<MAIN_INDEX[]>) => {
             state.cashFlowSheet = action.payload
@@ -62,7 +81,9 @@ export const {
     SET_BLC_FINANCIAL,
     SET_BLC_INSURANCE,
     SET_BLC_SECURITIES,
-    SET_INCOME_SHEET,
+    SET_INC_NORMAL,
+    SET_INC_FINANCIAL,
+    SET_INC_SECURITIES,
     SET_CASHFLOW_SHEET
 } = reportsSlice.actions
 

@@ -44,51 +44,96 @@ export default class ApiSets{
         return api("GET", params, JSON.stringify(params.data))
     }
     static async get_balenceSheet<TResponse>():Promise<TResponse>{
-        // url = http://localhost:8000/governance/balenceSheet
+        // url = http://localhost:8000/balenceSheet/balenceSheet
         let params:paramsIF = {
             type:"balenceSheet_normal",
-            router:"governance/",
+            router:"balenceSheet/",
             data:{}
         }
         return api("GET", params, JSON.stringify(params.data))
     }
     static async get_balenceSheet_abnormal<TResponse>():Promise<TResponse>{
-        // url = http://localhost:8000/governance/balenceSheet_abnormal
+        // url = http://localhost:8000/balenceSheet/balenceSheet_abnormal
         let params:paramsIF = {
             type:"balenceSheet_abnormal",
-            router:"governance/",
+            router:"balenceSheet/",
             data:{}
         }
         return api("GET", params, JSON.stringify(params.data))
     }
     static async get_balenceSheet_financial<TResponse>():Promise<TResponse>{
-        // url = http://localhost:8000/governance/balenceSheet_financial
+        // url = http://localhost:8000/balenceSheet/balenceSheet_financial
         let params:paramsIF = {
             type:"balenceSheet_financial",
-            router:"governance/",
+            router:"balenceSheet/",
             data:{}
         }
         return api("GET", params, JSON.stringify(params.data))
     }
     static async get_balenceSheet_securities<TResponse>():Promise<TResponse>{
-        // url = http://localhost:8000/governance/balenceSheet_securities
+        // url = http://localhost:8000/balenceSheet/balenceSheet_securities
         let params:paramsIF = {
             type:"balenceSheet_securities",
-            router:"governance/",
+            router:"balenceSheet/",
             data:{}
         }
         return api("GET", params, JSON.stringify(params.data))
     }
     static async get_balenceSheet_ins<TResponse>():Promise<TResponse>{
-        // url = http://localhost:8000/governance/balenceSheet_insurance
+        // url = http://localhost:8000/balenceSheet/balenceSheet_insurance
         let params:paramsIF = {
             type:"balenceSheet_insurance",
-            router:"governance/",
+            router:"balenceSheet/",
             data:{}
         }
         return api("GET", params, JSON.stringify(params.data))
     }
 
+    static async get_incomeStatement<TResponse>():Promise<TResponse>{
+        // url = http://localhost:8000/incomeStatement/incomeStatement
+        let params:paramsIF = {
+            type:"incomeStatement_normal",
+            router:"incomeStatement/",
+            data:{}
+        }
+        return api("GET", params, JSON.stringify(params.data))
+    }
+    static async get_incomeStatement_abnormal<TResponse>():Promise<TResponse>{
+        // url = http://localhost:8000/incomeStatement/incomeStatement_abnormal
+        let params:paramsIF = {
+            type:"incomeStatement_abnormal",
+            router:"incomeStatement/",
+            data:{}
+        }
+        return api("GET", params, JSON.stringify(params.data))
+    }
+    static async get_incomeStatement_financial<TResponse>():Promise<TResponse>{
+        // url = http://localhost:8000/incomeStatement/incomeStatement_financial
+        let params:paramsIF = {
+            type:"incomeStatement_financial",
+            router:"incomeStatement/",
+            data:{}
+        }
+        return api("GET", params, JSON.stringify(params.data))
+    }
+    static async get_incomeStatement_securities<TResponse>():Promise<TResponse>{
+        // url = http://localhost:8000/incomeStatement/incomeStatement_securities
+        let params:paramsIF = {
+            type:"incomeStatement_securities",
+            router:"incomeStatement/",
+            data:{}
+        }
+        return api("GET", params, JSON.stringify(params.data))
+    }
+    static async get_incomeStatement_ins<TResponse>():Promise<TResponse>{
+        // url = http://localhost:8000/incomeStatement/incomeStatement_insurance
+        let params:paramsIF = {
+            type:"incomeStatement_insurance",
+            router:"incomeStatement/",
+            data:{}
+        }
+        return api("GET", params, JSON.stringify(params.data))
+    }
     // static async post_order<TResponse>(ORDER:PostOrder):Promise<TResponse>{
     //     // url = http://localhost:8000/create_order?id=1&fromtime=123&totime=123
     //     let params = {

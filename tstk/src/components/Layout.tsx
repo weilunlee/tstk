@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
 import Dashboard from "./Dashboard/DashFrame";
 import EPSs from "./EPSs/EPS";
-import Listings from "./Listings/Listings";
 import NavBar from "./navBar/NavBar";
 import News from "./News/News";
 import IndiviualStock from "./Dashboard/Indiviual";
 // import MonthlyReport from "./Reports/monthlyReport";
 import BalenceSheet from "./Reports/balenceSheet";
+import IncomeStatement from "./Reports/incomeStatement";
 
 const Layout: React.FC=()=>{
     const [navSelc, setNavSelc] = useState<number>(100)
@@ -19,7 +19,7 @@ const Layout: React.FC=()=>{
             case 99: setSelcComponent(<IndiviualStock />); break;
             case 0: setSelcComponent(<News setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;
             case 1: setSelcComponent(<EPSs setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;
-            case 2: setSelcComponent(<Listings setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;
+            case 2: setSelcComponent(<IncomeStatement setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;
             // case 3: setSelcComponent(<MonthlyReport setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;
             case 3: setSelcComponent(<BalenceSheet setNavSelc={setNavSelc} lastSelc={lastSelc}/>); break;
         }
