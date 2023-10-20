@@ -1,10 +1,13 @@
-import { MAIN_INDEX, Stock_all_day } from "./InterFaceDash";
 import { UDIndex, UDsign, UDtransfer } from "./IndexRow";
-import GLOBAL_FUNC, { SelcBox } from "../../actions/globalFunc";
+import GLOBAL_FUNC from "../../actions/globalFunc";
 import { useAppSelector } from "../../stores/hooks";
 import { useEffect, useState } from "react";
+import { Stock_all_day } from "./InterFaceDash";
+import SortList from "../GlobalElements/SortLists";
+import { useDispatch } from "react-redux";
+import { STOCK_CHOSEN } from "../../stores/stocksSlice";
 
-const IndiviualStock: React.FC=()=>{
+const StockRows: React.FC=()=>{
     const store_stocks:Stock_all_day[] = useAppSelector(state=>state.stocks.stocks)
     const store_ETFs:Stock_all_day[] = useAppSelector(state=>state.stocks.etfs)
     return(
@@ -14,7 +17,7 @@ const IndiviualStock: React.FC=()=>{
     </div>
     )
 }
-export default IndiviualStock
+export default StockRows
 
 interface StockFrameIF{
     stocks:Stock_all_day[],
@@ -22,27 +25,41 @@ interface StockFrameIF{
 }
 
 const StockFrame=({stocks, name}:StockFrameIF):JSX.Element=>{
+    const contentArr:string[] = ["Change","TradeVolume","Transaction"]
     const [restoreType, setRestoreType] = useState<string>("Code");
     const [stockRow, setStockRow] = useState<Stock_all_day[]>();
+    const [switcher, setSwitcher] = useState<number>(0);
+    function handleSwitcher(_tag:number):void{
+        if(_tag===switcher) setSwitcher(0)
+        else setSwitcher(_tag)
+    }
+    function restoreHandle(_content:string){
+        if(_content===restoreType) setRestoreType("Code")
+        else setRestoreType(_content)
+    }
     
     useEffect(()=>{
         if(!stocks) return
-        let _partial = stocks.slice().sort((a, b) => parseFloat(b[restoreType as keyof Stock_all_day]) - parseFloat(a[restoreType as keyof Stock_all_day])).slice(0, 50)
-        setStockRow(_partial)
-    }, [restoreType, stocks])
+        if(restoreType==="Code") setStockRow(stocks)
+        else if(switcher === 1){
+            let _partial = stocks.slice().sort((a, b) => parseFloat(b[restoreType as keyof Stock_all_day]) - parseFloat(a[restoreType as keyof Stock_all_day])).slice(0, 50)
+            setStockRow(_partial)
+        }else{
+            let _partial = stocks.slice().sort((a, b) => parseFloat(a[restoreType as keyof Stock_all_day]) - parseFloat(b[restoreType as keyof Stock_all_day])).slice(0, 50)
+            setStockRow(_partial)
+        }
+    }, [restoreType, stocks, switcher])
 
     return(
     <div className="bg-white rounded-lg shadow col-span-1">
-        <div className="flex flex-row items-center justify-between pr-5 h-12">
+        <div className="flex flex-row items-center justify-between h-12">
             <div className="flex flex-row">
                 <div className="text-2xl font-extrabold pl-4 tracking-wider mr-2">{name}</div>
                 <div>{stocks.length}</div>
             </div>
-            <div className="flex flex-row">
-                {["Code","Change","TradeVolume","Transaction"].map(res=><SelcBox key={res} content={res} func={setRestoreType} selected={restoreType}/>)}
-            </div>                    
+            <SortList contentArr={contentArr} handleSwitcher={handleSwitcher} switcher={switcher} restoreType={restoreType} restoreHandle={restoreHandle}/>                  
         </div>
-        <div className="h-[85vh] scrollbar overflow-auto pad-l-2px">
+        <div className="h-[89vh] scrollbar overflow-auto pad-l-2px">
             {stockRow && stockRow.map((res, index)=><StockRow {...res} key={index}/>)}
         </div>
     </div>
@@ -53,7 +70,9 @@ function StockRow(stock:Stock_all_day):JSX.Element{
     let Qutoe = parseFloat(stock.ClosingPrice) - parseFloat(stock.OpeningPrice)
     let sign = Qutoe>0?"+":Qutoe===0?"":"-"
     let percentage = (Qutoe*100/parseFloat(stock.ClosingPrice)).toFixed(2)
-    return  <div className={"grid grid-cols-16 mb-1 hover:bg-pink-200"} >
+    const dispatch = useDispatch()
+
+    return  <div className={"grid grid-cols-16 mb-1 hover:bg-pink-200"} onClick={()=>{dispatch(STOCK_CHOSEN(stock.Code))}}>
     <div className={UDsign(sign, percentage.toString()) + " pl-3 flex items-center col-span-1"}>{UDtransfer(sign, percentage.toString())}</div>
     <div className="flex flex-row col-span-4">
         <div className="w-8 text-xs mr-4">{stock.Code}</div>
@@ -64,16 +83,6 @@ function StockRow(stock:Stock_all_day):JSX.Element{
     <div className="flex justify-end items-center col-span-3">{stock.TradeVolume} 張</div>
     <div className="flex justify-end items-center col-span-3 pr-5">{stock.Transaction} 次</div>
 </div>
-}
-
-function Top20Trade(row:MAIN_INDEX[]):JSX.Element{
-    return <div className={`mt-5 border-l-[30px] border-4 border-slate-300 bg-white shadow rounded-xl w-[25rem] h-80 flex flex-col justify-around items-start`}>
-        {row.map(res=><div className="w-full flex flex-row justify-between items-center hover:bg-slate-200" key={res.指數}>
-            {/* <div>{UDIndex(res.漲跌, res.漲跌百分比)}</div>
-            <div className="w-40">{GLOBAL_FUNC.abbreviate(nameHandle(res.指數), 8)}</div>
-            <div className="w-20">{res.收盤指數}</div> */}
-        </div>)}
-    </div>
 }
 
 export function nameHandle(name:string):string{

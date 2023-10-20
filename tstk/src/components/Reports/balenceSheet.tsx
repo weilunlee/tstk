@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react"
-import ApiSets from "../../actions/APIs/apiSets"
 import { LayoutProps } from "../../interfaces/IfProps"
 import { blcSheetIF } from "../../actions/APIs/apiInterface"
-import GLOBAL_FUNC, { SelcBox } from "../../actions/globalFunc"
+import GLOBAL_FUNC from "../../actions/globalFunc"
 import { Stock_all_day } from "../Dashboard/InterFaceDash"
-import { useAppDispatch, useAppSelector } from "../../stores/hooks"
-import { SET_BLC_FINANCIAL, SET_BLC_NORMAL, SET_BLC_SECURITIES } from "../../stores/reportsSlice"
+import { useAppSelector } from "../../stores/hooks"
+import SortList from "../GlobalElements/SortLists"
 
 interface blcsheet_with_stockInfo extends blcSheetIF{
     ClosingPrice:string,
@@ -17,33 +16,23 @@ interface blcsheet_with_stockInfo extends blcSheetIF{
 }
 
 const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
+    const contentArr:string[] = ["資產總額", "負債總額", "權益總額", "保留盈餘", "流動資產", "BookValueOverShareValue", "PERatio"]
     const [blcSheetRow, setBlcSheetRow] = useState<blcsheet_with_stockInfo[]>();
     const [restoreType, setRestoreType] = useState<string>("資產總額");
     const store_stocks:Stock_all_day[] = useAppSelector(state=>state.stocks.stocks)
     const store_blcNormal:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.normal)
     const store_blcFinancial:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.financial)
-    // const store_blcAbnormal:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.abnormal)
-    // const store_blcIns:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.insurance)
     const store_blcSecur:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.sercurities)
-    const dispatch = useAppDispatch()
-    useEffect(()=>{
-        if(store_blcNormal.length!==0) return
-        ApiSets.get_balenceSheet<blcSheetIF[]>()
-        .then(res=>{dispatch(SET_BLC_NORMAL(res))})
-        .catch(err=>{console.log(err)})
-    }, [dispatch, store_blcNormal])
-    useEffect(()=>{
-        if(store_blcFinancial.length!==0) return
-        ApiSets.get_balenceSheet_financial<blcSheetIF[]>()
-        .then(res=>{dispatch(SET_BLC_FINANCIAL(res))})
-        .catch(err=>{console.log(err)})
-    }, [dispatch, store_blcFinancial])
-    useEffect(()=>{
-        if(store_blcSecur.length!==0) return
-        ApiSets.get_balenceSheet_securities<blcSheetIF[]>()
-        .then(res=>{dispatch(SET_BLC_SECURITIES(res))})
-        .catch(err=>{console.log(err)})
-    }, [dispatch, store_blcSecur])
+
+    const [switcher, setSwitcher] = useState<number>(0);
+    function handleSwitcher(_tag:number):void{
+        if(_tag===switcher) setSwitcher(0)
+        else setSwitcher(_tag)
+    }
+    function restoreHandle(_content:string){
+        if(_content===restoreType) setRestoreType("Code")
+        else setRestoreType(_content)
+    }
     
     useEffect(()=>{
         let highest = [...store_blcSecur, ...store_blcNormal, ...store_blcFinancial].flatMap(res=>{
@@ -59,10 +48,16 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
             }}
             return _arr
         })
-        let _partial = highest.sort((a, b) => parseFloat(b[restoreType as keyof blcsheet_with_stockInfo]) - parseFloat(a[restoreType as keyof blcsheet_with_stockInfo])).slice(0, 50)
+        let _partial:blcsheet_with_stockInfo[]
+        if(switcher===2){
+            _partial = highest.sort((a, b) => parseFloat(a[restoreType as keyof blcsheet_with_stockInfo]) - parseFloat(b[restoreType as keyof blcsheet_with_stockInfo])).slice(0, 50)
+        }
+        else{
+            _partial = highest.sort((a, b) => parseFloat(b[restoreType as keyof blcsheet_with_stockInfo]) - parseFloat(a[restoreType as keyof blcsheet_with_stockInfo])).slice(0, 50)
+        }
         if (!_partial) return
         setBlcSheetRow(_partial)
-    }, [store_blcSecur, store_blcNormal, store_blcFinancial, restoreType, store_stocks])
+    }, [store_blcSecur, store_blcNormal, store_blcFinancial, restoreType, store_stocks, switcher])
     
     return <div className="MainContainer">
         <div className="bg-white rounded-xl shadow col-span-1">
@@ -72,9 +67,7 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
                         <div className="text-2xl font-extrabold pl-4 tracking-wider mr-2">資 產 負 債 表 </div>
                         <div>{blcSheetRow&& blcSheetRow[0] && GLOBAL_FUNC.month(blcSheetRow[0].季別)}出表</div>
                     </div>
-                    <div className="flex flex-row">
-                        {["資產總額", "負債總額", "權益總額", "保留盈餘", "流動資產", "BookValueOverShareValue", "PERatio"].map(res=><SelcBox key={res} content={res} func={setRestoreType} selected={restoreType}/>)}
-                    </div>                    
+                    <SortList contentArr={contentArr} restoreType={restoreType} restoreHandle={restoreHandle} handleSwitcher={handleSwitcher} switcher={switcher}/>                   
                 </div>
             </div>
             <div className="grid grid-cols-12 text-l font-bold text-white mr-[10px]">

@@ -46,7 +46,7 @@ const ShowOrign=({children, content, type}:showProps):JSX.Element=>{
     </div>
 }
 
-interface SelcBoxIF{
+export interface SelcBoxIF{
     content:string,
     func:(val:string)=>void
     selected:string
@@ -60,3 +60,27 @@ export const SelcBox=({content, func, selected}:SelcBoxIF):JSX.Element=>{
 }
 
 export default GLOBAL_FUNC;
+
+export class Date4Stock{
+    date:Date
+    day:string
+    
+    constructor(_d?:string){
+        this.date = _d?new Date(_d):new Date()
+        this.day = this.dayHandler()
+    }
+
+    dayHandler():string{
+        let _day:number = this.date.getDay()
+        let _time:number = this.date.getHours()
+        switch (_day) {
+            case 0:
+                return `${this.date.getMonth()+1}/${this.date.getDate()-2}`
+            case 6:
+                return `${this.date.getMonth()+1}/${this.date.getDate()-1}`
+            default:
+                if(_time<15) return `${this.date.getMonth()+1}/${this.date.getDate()-1}`
+                else return `${this.date.getMonth()+1}/${this.date.getDate()}`
+        }
+    }
+}

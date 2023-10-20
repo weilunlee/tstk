@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { MAIN_INDEX } from "./InterFaceDash";
-import GLOBAL_FUNC from "../../actions/globalFunc";
-import { AllStockIF } from "./DashFrame";
+import GLOBAL_FUNC, { Date4Stock } from "../../actions/globalFunc";
+import { AllStockIF } from "../Dashboard/DashFrame";
+import { MAIN_INDEX } from "../Dashboard/InterFaceDash";
 
-interface SwitcherIF{ switcher:number, func:Function, tag:number }
+export  interface SwitcherIF{ switcher:number, func:Function, tag:number }
 
 const IndexRow=({allStock, asc, desc}:AllStockIF):JSX.Element=>{
     const [switcher, setSwitcher] = useState<number>(0);
@@ -19,8 +19,9 @@ const IndexRow=({allStock, asc, desc}:AllStockIF):JSX.Element=>{
             <div className="flex flex-row">
                 <div className="text-2xl font-extrabold pl-4 tracking-wider">TWSE 大 盤 指 數</div>
                 <div>{allStock.length}</div>
+                <div className="pl-5">{new Date4Stock().day}</div>
             </div>
-            <div className="flex flex-row">
+            <div className="flex flex-row w-20 mr-5 justify-around">
                 <Switcher switcher={switcher} func={handleSwitcher} tag={1} />
                 <Switcher switcher={switcher} func={handleSwitcher} tag={2} />            
             </div>
@@ -59,11 +60,11 @@ function StockRow(stock:MAIN_INDEX):JSX.Element{
 </div>
 }
 
-function Switcher({switcher, func, tag}:SwitcherIF):JSX.Element{
+export function Switcher({switcher, func, tag}:SwitcherIF):JSX.Element{
     let _color_bd = tag===1? "translate-y-px border-pink-700 border-r-2 border-t-2 ":"-translate-y-px border-green-700  border-b-2 border-r-2"
     let _rotate = tag===1? "-skew-y-[35deg]":"skew-y-[35deg]"
     let _color:string = tag===1?"pink":"green"
-    return <div onClick={()=>{func(tag)}} className={`mr-5 h-5 w-5 flex justify-center items-center rounded-md shadow cursor-pointer active:shadow-none ${switcher===tag?`bg-${_color}-300`:"bg-slate-200"}`}>
+    return <div onClick={()=>{func(tag)}} className={`h-5 w-5 flex justify-center items-center rounded-md shadow cursor-pointer active:shadow-none ${switcher===tag?`bg-${_color}-300`:"bg-slate-200"}`}>
         <div className={_rotate}>
             <div className={`w-3 h-1 rounded-xs ${_color_bd} hover:border-${_color}-800 ${switcher===tag?`border-${_color}-800`:`border-${_color}-300`}`}></div>
         </div>
@@ -84,7 +85,7 @@ export function UDtransfer(_ud:string, _index:string):JSX.Element{
 
 export function UDIndex(_ud:string, _index:string):JSX.Element{
     let _color = _ud==='+'? "bg-pink-300":_ud==='-'?"bg-green-300":"bg-slate-300"
-    return <div className="my-1 w-28 flex flex-row justify-around text-sm">
+    return <div className="my-1 flex flex-row justify-around text-sm">
         <div className={_color + " rounded-full flex justify-center px-2 ml-5"}>{_index}%</div>
     </div>
 }

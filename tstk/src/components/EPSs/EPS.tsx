@@ -2,8 +2,8 @@ import { useEffect, useState } from "react"
 // import APIs from "../../actions/APIs"
 import { LayoutProps } from "../../interfaces/IfProps"
 import { EPS_fromFetch } from "../../interfaces/IfAPI"
-import GLOBAL_VAR from "../../assests/globalAttr/globalVar"
-import { nameHandle } from "../Dashboard/Indiviual"
+import { nameHandle } from "../Dashboard/Stocks"
+import ApiSets from "../../actions/APIs/apiSets"
 
 
 const EPSs: React.FC<LayoutProps>=({setNavSelc, lastSelc})=>{
@@ -20,9 +20,9 @@ const EPSs: React.FC<LayoutProps>=({setNavSelc, lastSelc})=>{
     ]
 
     useEffect(()=>{
-        // let getEPS = new APIs(GLOBAL_VAR.HOST + "EPS").GET()
-        // getEPS.then(res=>{setEPS_row(res)})
-        // .catch(err=>{console.log(err)})
+        ApiSets.get_EPS<EPS_fromFetch[]>()
+        .then(res=>{setEPS_row(res)})
+        .catch(err=>{console.log(err)})
     }, [])
 
     function trans_String_to_Date(_str:string):string{
@@ -31,9 +31,9 @@ const EPSs: React.FC<LayoutProps>=({setNavSelc, lastSelc})=>{
 
     return(
     <div className="MainContainer">
-        <div className="cursor-pointer font-light" 
+        <div className="cursor-pointer font-light text-white" 
             onClick={()=>{setNavSelc(_previousPage)}}> {"<"} {lastSelc[1]}</div>
-        <div className="text-3xl tracking-wider   font-extrabold">EPS table</div>
+        <div className="text-3xl tracking-wider font-extrabold text-white">EPS table</div>
 
         <div className="bg-white rounded-lg shadow bx-shdw h-70 w-100 pad-b-10px">
             <div className="text-2xl font-bold">Earning Per Share</div>
