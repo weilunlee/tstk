@@ -11,7 +11,6 @@ function IndividualSheet(stock:Stock_all_day):JSX.Element{
     function toggleSpread(){setSpread(!spread)}
     const dispatch = useAppDispatch()
     useEffect(()=>{dispatch(REPORT_CHOSEN(stock.Code))}, [dispatch, stock])
-
     return  <>{blcSheet?<div className="w-96 bg-white rounded-xl p-2 col-span-1">
         <div className="col-span-2 font-bold my-2 mx-5">資產負債表</div>
         <div className="grid grid-cols-2 items-start">

@@ -23,7 +23,7 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
     const store_blcNormal:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.normal)
     const store_blcFinancial:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.financial)
     const store_blcSecur:blcSheetIF[] = useAppSelector(state=>state.reports.balanceSheet.sercurities)
-
+    console.log(store_blcNormal)
     const [switcher, setSwitcher] = useState<number>(0);
     function handleSwitcher(_tag:number):void{
         if(_tag===switcher) setSwitcher(0)
@@ -33,7 +33,7 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
         if(_content===restoreType) setRestoreType("Code")
         else setRestoreType(_content)
     }
-    
+
     useEffect(()=>{
         let highest = [...store_blcSecur, ...store_blcNormal, ...store_blcFinancial].flatMap(res=>{
             let _stock:Stock_all_day = store_stocks.filter(stock=>stock.Code===res.公司代號)[0]
@@ -58,7 +58,7 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
         if (!_partial) return
         setBlcSheetRow(_partial)
     }, [store_blcSecur, store_blcNormal, store_blcFinancial, restoreType, store_stocks, switcher])
-    
+
     return <div className="MainContainer">
         <div className="bg-white rounded-xl shadow col-span-1">
             <div className="flex flex-row justify-between items-center">
@@ -67,7 +67,7 @@ const BalenceSheet = ({setNavSelc, lastSelc}:LayoutProps):JSX.Element=>{
                         <div className="text-2xl font-extrabold pl-4 tracking-wider mr-2">資 產 負 債 表 </div>
                         <div>{blcSheetRow&& blcSheetRow[0] && GLOBAL_FUNC.month(blcSheetRow[0].季別)}出表</div>
                     </div>
-                    <SortList contentArr={contentArr} restoreType={restoreType} restoreHandle={restoreHandle} handleSwitcher={handleSwitcher} switcher={switcher}/>                   
+                    <SortList contentArr={contentArr} restoreType={restoreType} restoreHandle={restoreHandle} handleSwitcher={handleSwitcher} switcher={switcher}/>
                 </div>
             </div>
             <div className="grid grid-cols-12 text-l font-bold text-white mr-[10px]">
