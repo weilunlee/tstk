@@ -145,7 +145,6 @@ export default class ApiSets{
         }
         return api("GET", params, JSON.stringify(params.data))
     }
-    
     static async get_NEWS<TResponse>():Promise<TResponse>{
         // url = http://localhost:8000/incomeStatement/incomeStatement_insurance
         let params:paramsIF = {
@@ -155,7 +154,6 @@ export default class ApiSets{
         }
         return api("GET", params, JSON.stringify(params.data))
     }
-
     static async get_EPS<TResponse>():Promise<TResponse>{
         // url = http://localhost:8000/stockInfo/EPS
         let params:paramsIF = {
@@ -165,6 +163,16 @@ export default class ApiSets{
         }
         return api("GET", params, JSON.stringify(params.data))
     }
+    static async get_Revenue<TResponse>():Promise<TResponse>{
+        // url = http://localhost:8000/governance/monthlyRevenue
+        let params:paramsIF = {
+            type:"monthlyRevenue",
+            router:"governance/",
+            data:{}
+        }
+        return api("GET", params, JSON.stringify(params.data))
+    }
+
     // static async post_order<TResponse>(ORDER:PostOrder):Promise<TResponse>{
     //     // url = http://localhost:8000/create_order?id=1&fromtime=123&totime=123
     //     let params = {

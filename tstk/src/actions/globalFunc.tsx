@@ -2,6 +2,9 @@ import { ReactNode } from "react"
 import COMM_ATTR from "../styles/commAttrs"
 
 class GLOBAL_FUNC{
+    static subNumber(str:string, index:number):string{
+        return parseFloat(str).toFixed(index)
+    }
     static abbreviate(str:string='', length:number=5):JSX.Element{
         if(length===0){return <></>}
         if(str.length>length){
@@ -24,7 +27,7 @@ class GLOBAL_FUNC{
         else if(_len<=5) return <ShowOrign content={str} type={type}>{_flag}{_onlyNumber.substring(0, _onlyNumber.length - 0)}</ShowOrign>
         else if(_len<=8) return <ShowOrign content={str} type={type}>{_flag}{_onlyNumber.substring(0, _onlyNumber.length -4)}萬</ShowOrign>
         else if(_len<=12) return <ShowOrign content={str} type={type}>{_flag}{_onlyNumber.substring(0, _onlyNumber.length - 8)}億</ShowOrign>
-        else return <ShowOrign content={str} type={type}>{_flag}{str.substring(0, str.length - 12)}.{_onlyNumber.substring(0, _onlyNumber.length - 11)}兆</ShowOrign>
+        else return <ShowOrign content={str} type={type}>{_flag}{_onlyNumber.substring(0, _onlyNumber.length - 12)}.{_onlyNumber.substring(0, _onlyNumber.length - 11)}兆</ShowOrign>
     }
     static fractial(Numerator:string, denominator:string, fixed:number):string{
         let _re = (parseInt(Numerator)*100/parseInt(denominator)).toFixed(fixed)

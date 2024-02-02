@@ -3,6 +3,8 @@ import { useAppDispatch } from "../stores/hooks"
 import ApiSets from "../actions/APIs/apiSets"
 import { blcSheetIF, incStatementIF } from "../actions/APIs/apiInterface"
 import { SET_BLC_FINANCIAL, SET_BLC_NORMAL, SET_BLC_SECURITIES, SET_INC_FINANCIAL, SET_INC_NORMAL, SET_INC_SECURITIES } from "../stores/reportsSlice"
+import { SET_STOCKS_REVENUE } from "../stores/stockInfoSlice"
+import { RevenueIF } from "../interfaces/IfAPI"
 
 function FetchLayer():JSX.Element{
     const dispatch = useAppDispatch()
@@ -37,7 +39,11 @@ function FetchLayer():JSX.Element{
         .then(res=>{dispatch(SET_INC_SECURITIES(res))})
         .catch(err=>{console.log(err)})
     }, [dispatch])
-
+    useEffect(()=>{
+        ApiSets.get_Revenue<RevenueIF[]>()
+        .then(res=>{dispatch(SET_STOCKS_REVENUE(res))})
+        .catch(err=>{console.log(err)})
+    }, [dispatch])
     return <></>
 }
 
