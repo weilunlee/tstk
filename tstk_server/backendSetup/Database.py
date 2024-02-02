@@ -6,19 +6,35 @@ from sqlalchemy.orm import sessionmaker
 import env
 
 DATABASE_URL = "mysql+pymysql://" + env.USER+":"+env.PWD+"@"+env.HOST_PORT_DB+'/'+env.DB
-
 engine = create_engine(DATABASE_URL, echo=False, pool_recycle=1200, pool_size=120)
-
-SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
-
+# SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
 Base = declarative_base()
 
-def get_db():
-    db=SessionLocal()
-    try:
-        yield db
-    except:
-        db.close()
+# def get_db():
+#     db=SessionLocal()
+#     try:
+#         yield db
+#     except:
+#         db.close()
+
+def create_table():
+    Base.metadata.create_all(engine)
+
+
+def drop_table():
+    Base.metadata.drop_all(engine)
+
+
+def create_session():
+    Session = sessionmaker(bind=engine)
+    session = Session()
+
+    return session
+
+
+if __name__ == '__main__':
+    drop_table()
+    create_table()
 
 
 
@@ -53,7 +69,7 @@ class DB(object):
             command = "INSERT INTO "+_table+" VALUES "+_value
             cursor.execute(command)
             conn.commit()
-    
+
     # 新增多筆資料
     def insert_multiple(self, _table:str, _data:list, _handling_func:any):
     # def insert_multiple(self, _table:str, _data:list):
