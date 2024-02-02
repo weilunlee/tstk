@@ -12,10 +12,10 @@ async def balenceSheet_normal():
     return _newList_data
 
 #  上市公司資產負債表 異業
-#  https://openapi.twse.com.tw/v1/opendata/t187ap07_L_min
+#  https://openapi.twse.com.tw/v1/opendata/t187ap07_L_mim
 @router.get("/balenceSheet/balenceSheet_abnormal", status_code=200, summary='上市公司資產負債表 異業')
 async def balenceSheet_abnormal():
-    _api = APIs("https://openapi.twse.com.tw/v1/opendata/t187ap07_L_min")
+    _api = APIs("https://openapi.twse.com.tw/v1/opendata/t187ap07_L_mim")
     _newList_data = _api.fetchAPI()
     return _newList_data
 

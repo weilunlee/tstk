@@ -1,3 +1,11 @@
+## 基本套件
+py get-pip.py
+pip install fastapi
+pip install uvicorn
+pip install pymysql
+pip install sqlalchemy
+
+
 ## twstock 文件系統
 
 ```sh

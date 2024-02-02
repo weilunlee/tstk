@@ -20,11 +20,19 @@ router = APIRouter(tags=["Governance"])
 #     return _newList_data
 
 
-#  上市公司每月營業收入彙整表
+#  公發公司每月營業收入彙整表
 #  https://openapi.twse.com.tw/v1/opendata/t187ap05_P
+@router.get("/governance/monthlyRevenue_Public", status_code=200, summary='上市公司每月營業收入彙整表')
+async def monthlyRevenue_Public():
+    _api = APIs("https://openapi.twse.com.tw/v1/opendata/t187ap05_P")
+    _newList_data = _api.fetchAPI()
+    return _newList_data    
+
+#  上市公司每月營業收入彙整表
+#  https://openapi.twse.com.tw/v1/opendata/t187ap05_L
 @router.get("/governance/monthlyRevenue", status_code=200, summary='上市公司每月營業收入彙整表')
 async def monthlyRevenue():
-    _api = APIs("https://openapi.twse.com.tw/v1/opendata/t187ap05_P")
+    _api = APIs("https://openapi.twse.com.tw/v1/opendata/t187ap05_L")
     _newList_data = _api.fetchAPI()
     return _newList_data    
 
