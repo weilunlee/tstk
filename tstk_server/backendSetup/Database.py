@@ -5,11 +5,14 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import env
 
-DATABASE_URL = "mysql+pymysql://" + env.USER+":"+env.PWD+"@"+env.HOST_PORT_DB+'/'+env.DB
-engine = create_engine(DATABASE_URL, echo=False, pool_recycle=1200, pool_size=120)
-# SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
-Base = declarative_base()
-
+try:
+    DATABASE_URL = "mysql+pymysql://" + env.USER+":"+env.PWD+"@"+env.HOST_PORT_DB+'/'+env.DB
+    print(DATABASE_URL)
+    engine = create_engine(DATABASE_URL, echo=False, pool_recycle=1200, pool_size=120)
+    # SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+    Base = declarative_base()
+except Exception as err:
+    print(err.__traceback__.tb_lineno, err)
 # def get_db():
 #     db=SessionLocal()
 #     try:
@@ -18,18 +21,25 @@ Base = declarative_base()
 #         db.close()
 
 def create_table():
-    Base.metadata.create_all(engine)
-
+    try:
+        Base.metadata.create_all(engine)
+    except Exception as err:
+        print(err.__traceback__.tb_lineno, err)
 
 def drop_table():
-    Base.metadata.drop_all(engine)
-
+    try:
+        Base.metadata.drop_all(engine)
+    except Exception as err:
+        print(err.__traceback__.tb_lineno, err)
 
 def create_session():
-    Session = sessionmaker(bind=engine)
-    session = Session()
+    try:
+        Session = sessionmaker(bind=engine)
+        session = Session()
 
-    return session
+        return session
+    except Exception as err:
+        print(err.__traceback__.tb_lineno, err)
 
 
 if __name__ == '__main__':
