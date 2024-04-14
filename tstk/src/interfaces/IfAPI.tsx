@@ -45,4 +45,4 @@ export interface EPS_fromFetch{
     營業利益: string,
     營業外收入及支出: string,
     稅後淨利: string
-  }
+}
