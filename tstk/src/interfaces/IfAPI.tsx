@@ -46,3 +46,19 @@ export interface EPS_fromFetch{
     營業外收入及支出: string,
     稅後淨利: string
 }
+export interface RevenueIF{
+    "備註":string,
+    "公司代號":string,
+    "公司名稱":string,
+    "出表日期":string,
+    "營業收入-上月比較增減(%)":string,
+    "營業收入-上月營收":string,
+    "營業收入-去年同月增減(%)":string,
+    "營業收入-去年當月營收":string,
+    "營業收入-當月營收":string,
+    "產業別":string,
+    "累計營業收入-前期比較增減(%)":string,
+    "累計營業收入-去年累計營收":string,
+    "累計營業收入-當月累計營收":string,
+    "資料年月":string
+}

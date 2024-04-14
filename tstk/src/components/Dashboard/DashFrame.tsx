@@ -13,7 +13,6 @@ const DashFrame: React.FC=()=>{
     const dispatch = useAppDispatch()
     const store_MI = useAppSelector(state=>state.stocks.mainIndex)
     const store_stocks = useAppSelector(state=>state.stocks.stocks)
-
     useEffect(()=>{
         if(store_MI.length!==0){return}
         ApiSets.get_main_index<MAIN_INDEX[]>()

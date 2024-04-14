@@ -5,13 +5,15 @@ import { STOCK_RESET } from "../../stores/stocksSlice"
 import { UDIndex } from "../Dashboard/IndexRow"
 import { Stock_all_day } from "../Dashboard/InterFaceDash"
 import { REPORT_CHOSEN } from "../../stores/reportsSlice"
-import IndividualSheet from "./IndividualSheet"
+import IndividualSheet from "./Sheets"
+import Revenue from "./Revenue"
 
 interface IndividualIF extends LayoutProps{ stock:Stock_all_day }
 
 function Individual({stock, setNavSelc, lastSelc}:IndividualIF):JSX.Element{
     let _previousPage:number = lastSelc[0]
     const blcSheet = useAppSelector(state=>state.reports.reportSelc.balanceSheet)
+    const RevenueInfo = useAppSelector(state=>state.stockInfo.stocks).filter(res=>res.公司代號===stock.Code)[0]
     const dispatch = useAppDispatch()
     useEffect(()=>{dispatch(REPORT_CHOSEN(stock.Code))}, [dispatch, stock])
     function returnFunc(){
@@ -35,12 +37,20 @@ function Individual({stock, setNavSelc, lastSelc}:IndividualIF):JSX.Element{
                 <div>{stock.ClosingPrice}</div>
             </div>
         </div>
+        <div className="text-white">{RevenueInfo.產業別}</div>
         <div className="w-96 bg-white rounded-xl p-2" style={{}}>
             <div className={"grid grid-cols-16"}>
                 <div className="flex justify-end items-center col-span-3 pr-2">{stock.ClosingPrice}</div>
                 <div className="flex justify-end items-center col-span-3">{stock.TradeVolume} 張</div>
                 <div className="flex justify-end items-center col-span-3 pr-5">{stock.Transaction} 次</div>
             </div>
+        </div>
+        <div className="grid grid-cols-2 gap-2 mt-10">
+            <div className="text-white font-bold text-2xl col-span-2 flex">
+                <div>年收</div>
+                <div className="ml-5 font-normal text-base">月份：{RevenueInfo.資料年月} 出表：{RevenueInfo.出表日期}</div>
+            </div>
+            <Revenue stock={stock} RevenueInfo={RevenueInfo} />
         </div>
         <div className="grid grid-cols-2 gap-2 mt-10">
             <div className="text-white font-bold text-2xl col-span-2 flex">

@@ -5,46 +5,20 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 import env
 
-try:
-    DATABASE_URL = "mysql+pymysql://" + env.USER+":"+env.PWD+"@"+env.HOST_PORT_DB+'/'+env.DB
-    print(DATABASE_URL)
-    engine = create_engine(DATABASE_URL, echo=False, pool_recycle=1200, pool_size=120)
-    # SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
-    Base = declarative_base()
-except Exception as err:
-    print(err.__traceback__.tb_lineno, err)
-# def get_db():
-#     db=SessionLocal()
-#     try:
-#         yield db
-#     except:
-#         db.close()
+DATABASE_URL = "mysql+pymysql://" + env.USER+":"+env.PWD+"@"+env.HOST_PORT_DB+'/'+env.DB
 
-def create_table():
+engine = create_engine(DATABASE_URL, echo=False, pool_recycle=1200, pool_size=120)
+
+SessionLocal = sessionmaker(bind=engine, autocommit=False, autoflush=False)
+
+Base = declarative_base()
+
+def get_db():
+    db=SessionLocal()
     try:
-        Base.metadata.create_all(engine)
-    except Exception as err:
-        print(err.__traceback__.tb_lineno, err)
-
-def drop_table():
-    try:
-        Base.metadata.drop_all(engine)
-    except Exception as err:
-        print(err.__traceback__.tb_lineno, err)
-
-def create_session():
-    try:
-        Session = sessionmaker(bind=engine)
-        session = Session()
-
-        return session
-    except Exception as err:
-        print(err.__traceback__.tb_lineno, err)
-
-
-if __name__ == '__main__':
-    drop_table()
-    create_table()
+        yield db
+    except:
+        db.close()
 
 
 
@@ -79,7 +53,7 @@ class DB(object):
             command = "INSERT INTO "+_table+" VALUES "+_value
             cursor.execute(command)
             conn.commit()
-
+    
     # 新增多筆資料
     def insert_multiple(self, _table:str, _data:list, _handling_func:any):
     # def insert_multiple(self, _table:str, _data:list):

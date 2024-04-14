@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Layout_to_Nav_Props } from "../../interfaces/IfProps";
 import { useAppDispatch, useAppSelector } from "../../stores/hooks";
 import { SEARCH_STOCK, STOCK_CHOSEN, STOCK_RESET } from "../../stores/stocksSlice";
@@ -13,6 +13,11 @@ const NavBar: React.FC<Layout_to_Nav_Props>=({navSelc, setNavSelc, setLastSelc})
     const [focus, setFocus] = useState<boolean>(false);
     const [index, setIndex] = useState(0);
     function toggleFocus():void {setFocus(!focus)}
+    useEffect(()=>{
+        if(focus && searchText==="TWSE"){
+            setSearchText("")
+        }
+    }, [focus, searchText])
     function handlingNavSelection(index:number){
         setLastSelc([navSelc, navBarItems[navSelc]])
         setNavSelc(index)
@@ -21,7 +26,10 @@ const NavBar: React.FC<Layout_to_Nav_Props>=({navSelc, setNavSelc, setLastSelc})
     function pressKey(e:keyboardKey):void{
         setFocus(true)
         let _i = index
-        if(e.key==="ArrowDown"){
+        if(e.key==="Escape"){
+            setFocus(false)
+        }
+        else if(e.key==="ArrowDown"){
             _i++
             if(_i>=searchList.length) _i = searchList.length-1
             setIndex(_i)
