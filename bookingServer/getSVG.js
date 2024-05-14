@@ -10,6 +10,12 @@ postData("https://www.feastogether.com.tw/api/994f5388-d001-4ca4-a7b1-72750d4211
 
 function proccessData(data){
   console.log(data)
+  var svgCaptcha = require('svg-captcha');
+
+  var captcha = svgCaptcha.create();
+  console.log(captcha);
+  // {data: '<svg.../svg>', text: 'abcd'}
+
   let date = data.filter(res=>!res.isFull)
   console.log(date)
 }
